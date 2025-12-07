@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ELEMENT ENFO</title>
+<style>
+  body { font-family: bold, sans-serif; padding: 30px; background-color:cyan; }
+  input[type=number] { padding: 12px; font-size: 36px; width: 100px; }
+  button { padding: 8px 16px; font-size: 30px; margin-left: 8px; cursor: pointer; }
+  .result { margin-top: 20px; background: #fff; padding: 25px; border-radius: 18px; box-shadow: 0 0 5px #aaa; max-width: 1000px; }
+  h2 { margin-top: 0; }
+  .atomic-model { font-style: italic; color: green; margin-top: 10px; }
+   
+</style>
+</head>
+<body>
+<center><b><h1><font color="navy"size="20px">PREPARED BY:-SHAILESH PATWA (राजकीय प्रवक्ता रसायन शास्त्र )</h1></b></center>
+<h3><marquee><u><font color="red">PT. D.D.U. GOVT. MODEL INTER COLLEGE GOTHWA BASTI</font></u></marquee></h3>
+<h3>ELEMENT INFO:</h3>
+<label for="atomicNumber"><font size="9px">Enter Atomic Number (1-118): </font></label><font size="6px"color="red">
+<input type="number" id="atomicNumber" min="1" max="118" />
+<button onclick="showElementInfo()">Get Info</button>
+
+<div class="result" id="result"></div>
+
+<script>
+// Database for first 118 elements
+const elements = {
+  1:  {name:"Hydrogen", symbol:"H", valency:1, configuration:"1s¹", mass:1.008, model:"1 electron in 1st shell"} ,
+  2:  {name:"Helium", symbol:"He", valency:0, configuration:"1s²", mass:4.0026, model:"2 electrons in 1st shell"},
+  3:  {name:"Lithium", symbol:"Li", valency:1, configuration:"[He] 2s¹", mass:6.94, model:"2 electrons in 1st shell, 1 in 2nd"},
+  4:  {name:"Beryllium", symbol:"Be", valency:2, configuration:"[He] 2s²", mass:9.0122, model:"2 electrons in 1st shell, 2 in 2nd"},
+  5:  {name:"Boron", symbol:"B", valency:3, configuration:"[He] 2s² 2p¹", mass:10.81, model:"2 electrons in 1st shell, 3 in 2nd"},
+  6:  {name:"Carbon", symbol:"C", valency:4, configuration:"[He] 2s² 2p²", mass:12.011, model:"2 electrons in 1st shell, 4 in 2nd"},
+  7:  {name:"Nitrogen", symbol:"N", valency:3, configuration:"[He] 2s² 2p³", mass:14.007, model:"2 electrons in 1st shell, 5 in 2nd"},
+  8:  {name:"Oxygen", symbol:"O", valency:2, configuration:"[He] 2s² 2p⁴", mass:15.999, model:"2 electrons in 1st shell, 6 in 2nd"},
+  9:  {name:"Fluorine", symbol:"F", valency:1, configuration:"[He] 2s² 2p⁵", mass:18.998, model:"2 electrons in 1st shell, 7 in 2nd"},
+  10: {name:"Neon", symbol:"Ne", valency:0, configuration:"[He] 2s² 2p⁶", mass:20.180, model:"2 electrons in 1st shell, 8 in 2nd"},
+  11: {name:"Sodium", symbol:"Na", valency:1, configuration:"[Ne] 3s¹", mass:22.990, model:"2,8,1 electron shells"},
+  12: {name:"Magnesium", symbol:"Mg", valency:2, configuration:"[Ne] 3s²", mass:24.305, model:"2,8,2 electron shells"},
+  13: {name:"Aluminium", symbol:"Al", valency:3, configuration:"[Ne] 3s² 3p¹", mass:26.982, model:"2,8,3 electron shells"},
+  14: {name:"Silicon", symbol:"Si", valency:4, configuration:"[Ne] 3s² 3p²", mass:28.085, model:"2,8,4 electron shells"},
+  15: {name:"Phosphorus", symbol:"P", valency:3, configuration:"[Ne] 3s² 3p³", mass:30.974, model:"2,8,5 electron shells"},
+  16: {name:"Sulfur", symbol:"S", valency:2, configuration:"[Ne] 3s² 3p⁴", mass:32.06, model:"2,8,6 electron shells"},
+  17: {name:"Chlorine", symbol:"Cl", valency:1, configuration:"[Ne] 3s² 3p⁵", mass:35.45, model:"2,8,7 electron shells"},
+  18: {name:"Argon", symbol:"Ar", valency:0, configuration:"[Ne] 3s² 3p⁶", mass:39.948, model:"2,8,8 electron shells"},
+  19: {name:"Potassium", symbol:"K", valency:1, configuration:"[Ar] 4s¹", mass:39.098, model:"2,8,8,1 electron shells"},
+  20: {name:"Calcium", symbol:"Ca", valency:2, configuration:"[Ar] 4s²", mass:40.078, model:"2,8,8,2 electron shells"},
+  21: {name:"Scandium", symbol:"Sc", valency:3, configuration:"[Ar] 3d¹ 4s²", mass:44.956, model:"2,8,9,2 electron shells"},
+  22: {name:"Titanium", symbol:"Ti", valency:4, configuration:"[Ar] 3d² 4s²", mass:47.867, model:"2,8,10,2 electron shells"},
+  23: {name:"Vanadium", symbol:"V", valency:5, configuration:"[Ar] 3d³ 4s²", mass:50.942, model:"2,8,11,2 electron shells"},
+  24: {name:"Chromium", symbol:"Cr", valency:6, configuration:"[Ar] 3d⁵ 4s¹", mass:51.996, model:"2,8,13,1 electron shells"},
+  25: {name:"Manganese", symbol:"Mn", valency:7, configuration:"[Ar] 3d⁵ 4s²", mass:54.938, model:"2,8,13,2 electron shells"},
+  26: {name:"Iron", symbol:"Fe", valency:2, configuration:"[Ar] 3d⁶ 4s²", mass:55.845, model:"2,8,14,2 electron shells"},
+  27: {name:"Cobalt", symbol:"Co", valency:2, configuration:"[Ar] 3d⁷ 4s²", mass:58.933, model:"2,8,15,2 electron shells"},
+  28: {name:"Nickel", symbol:"Ni", valency:2, configuration:"[Ar] 3d⁸ 4s²", mass:58.693, model:"2,8,16,2 electron shells"},
+  29: {name:"Copper", symbol:"Cu", valency:1, configuration:"[Ar] 3d¹⁰ 4s¹", mass:63.546, model:"2,8,18,1 electron shells"},
+  30: {name:"Zinc", symbol:"Zn", valency:2, configuration:"[Ar] 3d¹⁰ 4s²", mass:65.38, model:"2,8,18,2 electron shells"},
+  31: {name:"Gallium", symbol:"Ga", valency:3, configuration:"[Ar] 3d¹⁰ 4s² 4p¹", mass:69.723, model:"2,8,18,3 electron shells"},
+  32: {name:"Germanium", symbol:"Ge", valency:4, configuration:"[Ar] 3d¹⁰ 4s² 4p²", mass:72.630, model:"2,8,18,4 electron shells"},
+  33: {name:"Arsenic", symbol:"As", valency:3, configuration:"[Ar] 3d¹⁰ 4s² 4p³", mass:74.922, model:"2,8,18,5 electron shells"},
+  34: {name:"Selenium", symbol:"Se", valency:2, configuration:"[Ar] 3d¹⁰ 4s² 4p⁴", mass:78.971, model:"2,8,18,6 electron shells"},
+  35: {name:"Bromine", symbol:"Br", valency:1, configuration:"[Ar] 3d¹⁰ 4s² 4p⁵", mass:79.904, model:"2,8,18,7 electron shells"},
+  36: {name:"Krypton", symbol:"Kr", valency:0, configuration:"[Ar] 3d¹⁰ 4s² 4p⁶", mass:83.798, model:"2,8,18,8 electron shells"},
+  37: {name:"Rubidium", symbol:"Rb", valency:1, configuration:"[Kr] 5s¹", mass:85.468, model:"2,8,18,8,1 electron shells"},
+  38: {name:"Strontium", symbol:"Sr", valency:2, configuration:"[Kr] 5s²", mass:87.62, model:"2,8,18,8,2 electron shells"},
+  39: {name:"Yttrium", symbol:"Y", valency:3, configuration:"[Kr] 4d¹ 5s²", mass:88.906, model:"2,8,18,9,2 electron shells"},
+  40: {name:"Zirconium", symbol:"Zr", valency:4, configuration:"[Kr] 4d² 5s²", mass:91.224, model:"2,8,18,10,2 electron shells"},
+  41: {name:"Niobium", symbol:"Nb", valency:5, configuration:"[Kr] 4d⁴ 5s¹", mass:92.906, model:"2,8,18,12,1 electron shells"},
+  42: {name:"Molybdenum", symbol:"Mo", valency:6, configuration:"[Kr] 4d⁵ 5s¹", mass:95.95, model:"2,8,18,13,1 electron shells"},
+  43: {name:"Technetium", symbol:"Tc", valency:7, configuration:"[Kr] 4d⁵ 5s²", mass:98, model:"2,8,18,13,2 electron shells"},
+  44: {name:"Ruthenium", symbol:"Ru", valency:8, configuration:"[Kr] 4d⁷ 5s¹", mass:101.07, model:"2,8,18,15,1 electron shells"},
+  45: {name:"Rhodium", symbol:"Rh", valency:3, configuration:"[Kr] 4d⁸ 5s¹", mass:102.91, model:"2,8,18,16,1 electron shells"},
+  46: {name:"Palladium", symbol:"Pd", valency:0, configuration:"[Kr] 4d¹⁰", mass:106.42, model:"2,8,18,18 electron shells"},
+  47: {name:"Silver", symbol:"Ag", valency:1, configuration:"[Kr] 4d¹⁰ 5s¹", mass:107.87, model:"2,8,18,18,1 electron shells"},
+  48: {name:"Cadmium", symbol:"Cd", valency:2, configuration:"[Kr] 4d¹⁰ 5s²", mass:112.41, model:"2,8,18,18,2 electron shells"},
+  49: {name:"Indium", symbol:"In", valency:3, configuration:"[Kr] 4d¹⁰ 5s² 5p¹", mass:114.82, model:"2,8,18,18,3 electron shells"},
+  50: {name:"Tin", symbol:"Sn", valency:4, configuration:"[Kr] 4d¹⁰ 5s² 5p²", mass:118.71, model:"2,8,18,18,4 electron shells"},
+  51: {name:"Antimony", symbol:"Sb", valency:3, configuration:"[Kr] 4d¹⁰ 5s² 5p³", mass:121.76, model:"2,8,18,18,5 electron shells"},
+  52: {name:"Tellurium", symbol:"Te", valency:2, configuration:"[Kr] 4d¹⁰ 5s² 5p⁴", mass:127.60, model:"2,8,18,18,6 electron shells"},
+  53: {name:"Iodine", symbol:"I", valency:1, configuration:"[Kr] 4d¹⁰ 5s² 5p⁵", mass:126.90, model:"2,8,18,18,7 electron shells"},
+  54: {name:"Xenon", symbol:"Xe", valency:0, configuration:"[Kr] 4d¹⁰ 5s² 5p⁶", mass:131.29, model:"2,8,18,18,8 electron shells"},
+  55: {name:"Cesium", symbol:"Cs", valency:1, configuration:"[Xe] 6s¹", mass:132.91, model:"2,8,18,18,8,1 electron shells"},
+  56: {name:"Barium", symbol:"Ba", valency:2, configuration:"[Xe] 6s²", mass:137.33, model:"2,8,18,18,8,2 electron shells"},
+  57: {name:"Lanthanum", symbol:"La", valency:3, configuration:"[Xe] 5d¹ 6s²", mass:138.91, model:"2,8,18,18,9,2 electron shells"},
+  58: {name:"Cerium", symbol:"Ce", valency:3, configuration:"[Xe] 4f¹ 5d¹ 6s²", mass:140.12, model:"Lanthanide series"},
+  59: {name:"Praseodymium", symbol:"Pr", valency:3, configuration:"[Xe] 4f³ 6s²", mass:140.91, model:"Lanthanide series"},
+  60: {name:"Neodymium", symbol:"Nd", valency:3, configuration:"[Xe] 4f⁴ 6s²", mass:144.24, model:"Lanthanide series"},
+  61: {name:"Promethium", symbol:"Pm", valency:3, configuration:"[Xe] 4f⁵ 6s²", mass:145, model:"Lanthanide series"},
+  62: {name:"Samarium", symbol:"Sm", valency:3, configuration:"[Xe] 4f⁶ 6s²", mass:150.36, model:"Lanthanide series"},
+  63: {name:"Europium", symbol:"Eu", valency:3, configuration:"[Xe] 4f⁷ 6s²", mass:151.96, model:"Lanthanide series"},
+  64: {name:"Gadolinium", symbol:"Gd", valency:3, configuration:"[Xe] 4f⁷ 5d¹ 6s²", mass:157.25, model:"Lanthanide series"},
+  65: {name:"Terbium", symbol:"Tb", valency:3, configuration:"[Xe] 4f⁹ 6s²", mass:158.93, model:"Lanthanide series"},
+  66: {name:"Dysprosium", symbol:"Dy", valency:3, configuration:"[Xe] 4f¹⁰ 6s²", mass:162.50, model:"Lanthanide series"},
+  67: {name:"Holmium", symbol:"Ho", valency:3, configuration:"[Xe] 4f¹¹ 6s²", mass:164.93, model:"Lanthanide series"},
+  68: {name:"Erbium", symbol:"Er", valency:3, configuration:"[Xe] 4f¹² 6s²", mass:167.26, model:"Lanthanide series"},
+  69: {name:"Thulium", symbol:"Tm", valency:3, configuration:"[Xe] 4f¹³ 6s²", mass:168.93, model:"Lanthanide series"},
+  70: {name:"Ytterbium", symbol:"Yb", valency:3, configuration:"[Xe] 4f¹⁴ 6s²", mass:173.05, model:"Lanthanide series"},
+  71: {name:"Lutetium", symbol:"Lu", valency:3, configuration:"[Xe] 4f¹⁴ 5d¹ 6s²", mass:174.97, model:"Lanthanide series"},
+  72: {name:"Hafnium", symbol:"Hf", valency:4, configuration:"[Xe] 4f¹⁴ 5d² 6s²", mass:178.49, model:"2,8,18,32,10,2 electron shells"},
+  73: {name:"Tantalum", symbol:"Ta", valency:5, configuration:"[Xe] 4f¹⁴ 5d³ 6s²", mass:180.95, model:"2,8,18,32,11,2 electron shells"},
+  74: {name:"Tungsten", symbol:"W", valency:6, configuration:"[Xe] 4f¹⁴ 5d⁴ 6s²", mass:183.84, model:"2,8,18,32,12,2 electron shells"},
+  75: {name:"Rhenium", symbol:"Re", valency:7, configuration:"[Xe] 4f¹⁴ 5d⁵ 6s²", mass:186.21, model:"2,8,18,32,13,2 electron shells"},
+  76: {name:"Osmium", symbol:"Os", valency:8, configuration:"[Xe] 4f¹⁴ 5d⁶ 6s²", mass:190.23, model:"2,8,18,32,14,2 electron shells"},
+  77: {name:"Iridium", symbol:"Ir", valency:9, configuration:"[Xe] 4f¹⁴ 5d⁷ 6s²", mass:192.22, model:"2,8,18,32,15,2 electron shells"},
+  78: {name:"Platinum", symbol:"Pt", valency:10, configuration:"[Xe] 4f¹⁴ 5d⁹ 6s¹", mass:195.08, model:"2,8,18,32,17,1 electron shells"},
+  79: {name:"Gold", symbol:"Au", valency:1, configuration:"[Xe] 4f¹⁴ 5d¹⁰ 6s¹", mass:196.97, model:"2,8,18,32,18,1 electron shells"},
+  80: {name:"Mercury", symbol:"Hg", valency:2, configuration:"[Xe] 4f¹⁴ 5d¹⁰ 6s²", mass:200.59, model:"2,8,18,32,18,2 electron shells"},
+  81: {name:"Thallium", symbol:"Tl", valency:3, configuration:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹", mass:204.38, model:"2,8,18,32,18,3 electron shells"},
+  82: {name:"Lead", symbol:"Pb", valency:4, configuration:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²", mass:207.2, model:"2,8,18,32,18,4 electron shells"},
+  83: {name:"Bismuth", symbol:"Bi", valency:3, configuration:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³", mass:208.98, model:"2,8,18,32,18,5 electron shells"},
+  84: {name:"Polonium", symbol:"Po", valency:2, configuration:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴", mass:209, model:"2,8,18,32,18,6 electron shells"},
+  85: {name:"Astatine", symbol:"At", valency:1, configuration:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵", mass:210, model:"2,8,18,32,18,7 electron shells"},
+  86: {name:"Radon", symbol:"Rn", valency:0, configuration:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶", mass:222, model:"2,8,18,32,18,8 electron shells"},
+  87: {name:"Francium", symbol:"Fr", valency:1, configuration:"[Rn] 7s¹", mass:223, model:"2,8,18,32,18,8,1 electron shells"},
+  88: {name:"Radium", symbol:"Ra", valency:2, configuration:"[Rn] 7s²", mass:226, model:"2,8,18,32,18,8,2 electron shells"},
+  89: {name:"Actinium", symbol:"Ac", valency:3, configuration:"[Rn] 6d¹ 7s²", mass:227, model:"Actinide series"},
+  90: {name:"Thorium", symbol:"Th", valency:4, configuration:"[Rn] 6d² 7s²", mass:232.04, model:"Actinide series"},
+  91: {name:"Protactinium", symbol:"Pa", valency:5, configuration:"[Rn] 5f² 6d¹ 7s²", mass:231.04, model:"Actinide series"},
+  92: {name:"Uranium", symbol:"U", valency:6, configuration:"[Rn] 5f³ 6d¹ 7s²", mass:238.03, model:"Actinide series"},
+  93: {name:"Neptunium", symbol:"Np", valency:5, configuration:"[Rn] 5f⁴ 6d¹ 7s²", mass:237, model:"Actinide series"},
+  94: {name:"Plutonium", symbol:"Pu", valency:4, configuration:"[Rn] 5f⁶ 7s²", mass:244, model:"Actinide series"},
+  95: {name:"Americium", symbol:"Am", valency:3, configuration:"[Rn] 5f⁷ 7s²", mass:243, model:"Actinide series"},
+  96: {name:"Curium", symbol:"Cm", valency:3, configuration:"[Rn] 5f⁷ 6d¹ 7s²", mass:247, model:"Actinide series"},
+  97: {name:"Berkelium", symbol:"Bk", valency:3, configuration:"[Rn] 5f⁹ 7s²", mass:247, model:"Actinide series"},
+  98: {name:"Californium", symbol:"Cf", valency:3, configuration:"[Rn] 5f¹⁰ 7s²", mass:251, model:"Actinide series"},
+  99: {name:"Einsteinium", symbol:"Es", valency:3, configuration:"[Rn] 5f¹¹ 7s²", mass:252, model:"Actinide series"},
+  100:{name:"Fermium", symbol:"Fm", valency:3, configuration:"[Rn] 5f¹² 7s²", mass:257, model:"Actinide series"},
+  101:{name:"Mendelevium", symbol:"Md", valency:2, configuration:"[Rn] 5f¹³ 7s²", mass:258, model:"Actinide series"},
+  102:{name:"Nobelium", symbol:"No", valency:2, configuration:"[Rn] 5f¹⁴ 7s²", mass:259, model:"Actinide series"},
+  103:{name:"Lawrencium", symbol:"Lr", valency:3, configuration:"[Rn] 5f¹⁴ 6d¹ 7s²", mass:262, model:"Actinide series"},
+  104:{name:"Rutherfordium", symbol:"Rf", valency:4, configuration:"[Rn] 5f¹⁴ 6d² 7s²", mass:267, model:"Transition metal"},
+  105:{name:"Dubnium", symbol:"Db", valency:5, configuration:"[Rn] 5f¹⁴ 6d³ 7s²", mass:268, model:"Transition metal"},
+  106:{name:"Seaborgium", symbol:"Sg", valency:6, configuration:"[Rn] 5f¹⁴ 6d⁴ 7s²", mass:271, model:"Transition metal"},
+  107:{name:"Bohrium", symbol:"Bh", valency:7, configuration:"[Rn] 5f¹⁴ 6d⁵ 7s²", mass:270, model:"Transition metal"},
+  108:{name:"Hassium", symbol:"Hs", valency:8, configuration:"[Rn] 5f¹⁴ 6d⁶ 7s²", mass:269, model:"Transition metal"},
+  109:{name:"Meitnerium", symbol:"Mt", valency:9, configuration:"[Rn] 5f¹⁴ 6d⁷ 7s²", mass:278, model:"Transition metal"},
+  110:{name:"Darmstadtium", symbol:"Ds", valency:10, configuration:"[Rn] 5f¹⁴ 6d⁹ 7s¹", mass:281, model:"Transition metal"},
+  111:{name:"Roentgenium", symbol:"Rg", valency:1, configuration:"[Rn] 5f¹⁴ 6d¹⁰ 7s¹", mass:282, model:"Transition metal"},
+  112:{name:"Copernicium", symbol:"Cn", valency:2, configuration:"[Rn] 5f¹⁴ 6d¹⁰ 7s²", mass:285, model:"Transition metal"},
+  113:{name:"Nihonium", symbol:"Nh", valency:3, configuration:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹", mass:286, model:"Post-transition metal"},
+  114:{name:"Flerovium", symbol:"Fl", valency:4, configuration:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²", mass:289, model:"Post-transition metal"},
+  115:{name:"Moscovium", symbol:"Mc", valency:5, configuration:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³", mass:290, model:"Post-transition metal"},
+  116:{name:"Livermorium", symbol:"Lv", valency:6, configuration:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴", mass:293, model:"Post-transition metal"},
+  117:{name:"Tennessine", symbol:"Ts", valency:7, configuration:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵", mass:294, model:"Halogen"},
+  118:{name:"Oganesson", symbol:"Og", valency:0, configuration:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶", mass:294, model:"Noble gas"},
+};
+
+function showElementInfo() {
+  const input = document.getElementById("atomicNumber").value;
+  const resultDiv = document.getElementById("result");
+  const atomicNum = parseInt(input);
+
+  if (!atomicNum || atomicNum < 1 || atomicNum > 118) {
+    resultDiv.innerHTML = "<p style='color:red;'>Please enter a valid atomic number between 1 and 20.</p>";
+    return;
+  }
+
+  const element = elements[atomicNum];
+  if (!element) {
+    resultDiv.innerHTML = "<p>Element data not found.</p>";
+    return;
+  }
+
+  resultDiv.innerHTML = `
+    <h2>${element.name} (${element.symbol})</h2>
+    <p><strong>Atomic Number:</strong> ${atomicNum}</p>
+    <p><strong>Valency:</strong> ${element.valency}</p>
+    <p><strong>Electronic Configuration:</strong> ${element.configuration}</p>
+    <p><strong>Mass Number (Approx):</strong> ${element.mass}</p>
+    <p class="atomic-model"><strong>Atomic Model:</strong> ${element.model}</p>
+  `;
+}
+</script>
+
+</body>
+</html>
